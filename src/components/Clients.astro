@@ -6,20 +6,37 @@ const lang = getLangFromUrl(Astro.url);
 const clientEntries = await getCollection('clients');
 const clientData = clientEntries[0]?.data.clients ?? [];
 ---
-<section class="py-16 bg-rebel-darker">
+<section class="py-16 bg-rebel-darker overflow-hidden">
   <div class="max-w-7xl mx-auto px-6">
     <h2 class="text-2xl font-bold text-white mb-10 text-center">
       {t(lang, 'clients.title')}
     </h2>
-    <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-8 items-center justify-items-center opacity-70">
-      {clientData.map(client => (
+  </div>
+  <div class="relative">
+    <div class="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-rebel-darker to-transparent z-10"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-rebel-darker to-transparent z-10"></div>
+    <div class="carousel-track flex items-center gap-16 w-max">
+      {[...clientData, ...clientData].map(client => (
         <img
           src={client.logo}
           alt={client.name}
-          class="h-8 w-auto max-w-[120px] object-contain hover:opacity-100 transition-opacity"
+          class="h-12 w-auto max-w-[160px] object-contain opacity-70 hover:opacity-100 transition-opacity shrink-0"
           loading="lazy"
         />
       ))}
     </div>
   </div>
 </section>
+
+<style>
+  .carousel-track {
+    animation: scroll 40s linear infinite;
+  }
+  .carousel-track:hover {
+    animation-play-state: paused;
+  }
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
