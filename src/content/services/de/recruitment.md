@@ -1,6 +1,6 @@
 ---
-title: Product Recruitment
-description: "Ist es schwierig, die besten Talente zu finden? Wir helfen euch, diese Schlacht zu gewinnen. Bucht einen Product-Recruitment-Experten, um die richtigen Talente zu gewinnen."
+title: AI im Product Management
+description: "Braucht ihr Unterstützung in AI im Product Management? Wir unterstützen euch bei Strategie, Umsetzung oder mit Expertenwissen in beiden Bereichen."
 order: 3
 lang: de
 ---
