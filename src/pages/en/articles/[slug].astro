@@ -1,0 +1,39 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles
+    .filter(a => a.data.lang === 'en')
+    .map(article => ({
+      params: { slug: article.data.slug },
+      props: { article },
+    }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+---
+<Layout title={`${article.data.title} | Value Rebels`} description={article.data.excerpt}>
+  <article class="pt-32 pb-24">
+    <div class="max-w-3xl mx-auto px-6">
+      <a href="/en#publications" class="text-rebel-red hover:text-rebel-red-dark text-sm font-medium mb-8 inline-block transition-colors">
+        &larr; Back to publications
+      </a>
+      <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+        {article.data.title}
+      </h1>
+      <div class="flex items-center gap-4 text-rebel-text-muted text-sm mb-12">
+        <time datetime={article.data.date.toISOString()}>
+          {article.data.date.toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+        <span>&middot;</span>
+        <span>{article.data.readingTime} min read</span>
+      </div>
+      <div class="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-a:text-rebel-red">
+        <Content />
+      </div>
+    </div>
+  </article>
+</Layout>

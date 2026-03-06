@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+import { getLangFromUrl, t } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const allMembers = await getCollection('team');
+const members = allMembers
+  .filter(m => m.data.lang === lang)
+  .sort((a, b) => a.data.order - b.data.order);
+---
+<section id="team" class="py-24 bg-rebel-darker">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-4xl font-bold text-white mb-4">
+      <span class="border-b-4 border-rebel-red pb-2">{t(lang, 'team.title')}</span>
+    </h2>
+    <p class="text-rebel-text-muted max-w-3xl mb-16 text-lg leading-relaxed">
+      {t(lang, 'team.intro')}
+    </p>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+      {members.map(member => (
+        <div class="bg-rebel-gray rounded-lg overflow-hidden group hover:bg-rebel-gray-light transition-colors">
+          <div class="aspect-[4/3] overflow-hidden">
+            <img
+              src={member.data.photo}
+              alt={member.data.name}
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            />
+          </div>
+          <div class="p-6">
+            <h3 class="text-lg font-bold text-white mb-2">{member.data.name}</h3>
+            <p class="text-rebel-text-muted italic text-sm leading-relaxed">
+              &ldquo;{member.data.quote}&rdquo;
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Join CTA -->
+    <div class="bg-rebel-gray rounded-lg p-10 text-center">
+      <h3 class="text-2xl font-bold text-white mb-3">{t(lang, 'team.joinTitle')}</h3>
+      <p class="text-rebel-text-muted mb-6">{t(lang, 'team.joinText')}</p>
+      <a
+        href="mailto:hello@valuerebels.com"
+        class="inline-block bg-rebel-red hover:bg-rebel-red-dark text-white font-semibold text-sm tracking-widest uppercase px-8 py-4 rounded transition-colors"
+      >
+        {t(lang, 'hero.cta')}
+      </a>
+    </div>
+  </div>
+</section>

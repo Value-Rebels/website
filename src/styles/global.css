@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@theme {
+  --color-rebel-red: #e63946;
+  --color-rebel-red-dark: #c1121f;
+  --color-rebel-dark: #0a0a0a;
+  --color-rebel-darker: #050505;
+  --color-rebel-gray: #1a1a1a;
+  --color-rebel-gray-light: #2a2a2a;
+  --color-rebel-text: #e0e0e0;
+  --color-rebel-text-muted: #999999;
+  --font-sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-rebel-dark);
+  color: var(--color-rebel-text);
+}

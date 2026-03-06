@@ -1,0 +1,25 @@
+---
+import { getLangFromUrl, t } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+---
+<section class="relative pt-20 min-h-[80vh] flex items-center bg-rebel-darker overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-b from-rebel-darker/60 via-rebel-darker/80 to-rebel-dark z-10" />
+  <div class="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center opacity-40" />
+
+  <div class="relative z-20 max-w-7xl mx-auto px-6 py-24">
+    <h1 class="text-5xl md:text-7xl font-bold text-white leading-tight mb-6">
+      {t(lang, 'hero.title.line1')}<br />
+      {t(lang, 'hero.title.line2')}
+    </h1>
+    <p class="text-xl md:text-2xl text-rebel-text-muted mb-10 max-w-2xl">
+      {t(lang, 'hero.subtitle')}
+    </p>
+    <a
+      href={`mailto:hello@valuerebels.com`}
+      class="inline-block bg-rebel-red hover:bg-rebel-red-dark text-white font-semibold text-sm tracking-widest uppercase px-8 py-4 rounded transition-colors"
+    >
+      {t(lang, 'hero.cta')}
+    </a>
+  </div>
+</section>

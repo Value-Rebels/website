@@ -1,0 +1,61 @@
+---
+import { getLangFromUrl, t, localizedPath } from '../i18n/utils';
+import { languages, type Lang } from '../i18n/ui';
+
+const lang = getLangFromUrl(Astro.url);
+const otherLang: Lang = lang === 'en' ? 'de' : 'en';
+
+const navItems = [
+  { key: 'nav.home' as const, href: `/${lang}` },
+  { key: 'nav.services' as const, href: `/${lang}#services` },
+  { key: 'nav.publications' as const, href: `/${lang}#publications` },
+  { key: 'nav.team' as const, href: `/${lang}#team` },
+  { key: 'nav.contact' as const, href: `/${lang}#contact` },
+];
+---
+<header class="fixed top-0 w-full z-50 bg-rebel-darker/90 backdrop-blur-sm border-b border-white/5">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-20">
+    <a href={`/${lang}`} class="text-xl font-bold tracking-wider text-white">
+      VALUE <span class="text-rebel-red">&#9679;</span> REBELS
+    </a>
+
+    <nav class="hidden md:flex items-center gap-8">
+      {navItems.map(item => (
+        <a href={item.href} class="text-sm font-medium tracking-widest uppercase text-rebel-text-muted hover:text-white transition-colors">
+          {t(lang, item.key)}
+        </a>
+      ))}
+      <a
+        href={`/${otherLang}`}
+        class="ml-4 text-sm font-bold border border-white/20 rounded px-3 py-1 text-rebel-text-muted hover:text-white hover:border-white/40 transition-colors"
+      >
+        {languages[otherLang]}
+      </a>
+    </nav>
+
+    <button id="mobile-menu-btn" class="md:hidden text-white" aria-label="Menu">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="hidden md:hidden bg-rebel-darker border-t border-white/5">
+    <nav class="flex flex-col px-6 py-4 gap-4">
+      {navItems.map(item => (
+        <a href={item.href} class="text-sm font-medium tracking-widest uppercase text-rebel-text-muted hover:text-white transition-colors">
+          {t(lang, item.key)}
+        </a>
+      ))}
+      <a href={`/${otherLang}`} class="text-sm font-bold text-rebel-text-muted hover:text-white">
+        {languages[otherLang]}
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+</script>

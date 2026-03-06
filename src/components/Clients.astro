@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import { getLangFromUrl, t } from '../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const clientEntries = await getCollection('clients');
+const clientData = clientEntries[0]?.data.clients ?? [];
+---
+<section class="py-16 bg-rebel-darker">
+  <div class="max-w-7xl mx-auto px-6">
+    <h2 class="text-2xl font-bold text-white mb-10 text-center">
+      {t(lang, 'clients.title')}
+    </h2>
+    <div class="flex flex-wrap justify-center items-center gap-12 opacity-60">
+      {clientData.map(client => (
+        <img
+          src={client.logo}
+          alt={client.name}
+          class="h-10 w-auto grayscale hover:grayscale-0 transition-all"
+          loading="lazy"
+        />
+      ))}
+    </div>
+  </div>
+</section>
