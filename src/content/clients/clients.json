@@ -1,8 +1,25 @@
 {
   "clients": [
-    { "name": "Client 1", "logo": "/images/clients/client1.svg" },
-    { "name": "Client 2", "logo": "/images/clients/client2.svg" },
-    { "name": "Client 3", "logo": "/images/clients/client3.svg" },
-    { "name": "Client 4", "logo": "/images/clients/client4.svg" }
+    { "name": "real.digital", "logo": "/images/clients/client-1.png" },
+    { "name": "zooplus", "logo": "/images/clients/client-2.png" },
+    { "name": "Rameder", "logo": "/images/clients/client-3.png" },
+    { "name": "Meero", "logo": "/images/clients/client-4.png" },
+    { "name": "Peek & Cloppenburg", "logo": "/images/clients/client-5.png" },
+    { "name": "Shop Apotheke", "logo": "/images/clients/client-6.png" },
+    { "name": "Westwing", "logo": "/images/clients/client-7.png" },
+    { "name": "ParaAlpha", "logo": "/images/clients/client-8.png" },
+    { "name": "Breuninger", "logo": "/images/clients/client-9.png" },
+    { "name": "Digitale Leute", "logo": "/images/clients/client-10.png" },
+    { "name": "Just Eat Takeaway.com", "logo": "/images/clients/client-11.png" },
+    { "name": "ThinkSurance", "logo": "/images/clients/client-12.png" },
+    { "name": "Blinkist", "logo": "/images/clients/client-13.png" },
+    { "name": "Tech", "logo": "/images/clients/client-14.png" },
+    { "name": "Client", "logo": "/images/clients/client-15.png" },
+    { "name": "Global Savings Group", "logo": "/images/clients/client-16.png" },
+    { "name": "Amazon", "logo": "/images/clients/client-17.png" },
+    { "name": "Metro Markets", "logo": "/images/clients/client-18.png" },
+    { "name": "HiveDesk", "logo": "/images/clients/client-19.png" },
+    { "name": "gutefrage", "logo": "/images/clients/client-20.png" },
+    { "name": "MOTOR TALK", "logo": "/images/clients/client-21.png" }
   ]
 }
