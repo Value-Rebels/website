@@ -7,6 +7,11 @@ const allServices = await getCollection('services');
 const services = allServices
   .filter(s => s.data.lang === lang)
   .sort((a, b) => a.data.order - b.data.order);
+const servicePaths: Record<string, string> = {
+  'interim-pm': `/${lang}/services/interim-product-management`,
+  'coaching': `/${lang}/services/product-coaching-and-bootcamps`,
+  'ai-product-management': `/${lang}/services/ai-for-product-management`,
+};
 ---
 <section id="services" class="py-24 bg-rebel-dark">
   <div class="max-w-7xl mx-auto px-6">
@@ -18,17 +23,31 @@ const services = allServices
     </p>
 
     <div class="grid md:grid-cols-3 gap-8">
-      {services.map(service => (
-        <div class="bg-rebel-gray rounded-lg p-8 hover:bg-rebel-gray-light transition-colors group">
-          <div class="w-12 h-12 bg-rebel-red/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-rebel-red/30 transition-colors">
-            <svg class="w-6 h-6 text-rebel-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
+      {services.map(service => {
+        const routeKey = Object.keys(servicePaths).find((key) => service.id.endsWith(key));
+        const servicePath = routeKey ? servicePaths[routeKey] : undefined;
+        return servicePath ? (
+          <a href={servicePath} class="bg-rebel-gray rounded-lg p-8 hover:bg-rebel-gray-light transition-colors group block">
+            <div class="w-12 h-12 bg-rebel-red/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-rebel-red/30 transition-colors">
+              <svg class="w-6 h-6 text-rebel-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-4">{service.data.title}</h3>
+            <p class="text-rebel-text-muted leading-relaxed">{service.data.description}</p>
+          </a>
+        ) : (
+          <div class="bg-rebel-gray rounded-lg p-8 hover:bg-rebel-gray-light transition-colors group">
+            <div class="w-12 h-12 bg-rebel-red/20 rounded-lg flex items-center justify-center mb-6 group-hover:bg-rebel-red/30 transition-colors">
+              <svg class="w-6 h-6 text-rebel-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-4">{service.data.title}</h3>
+            <p class="text-rebel-text-muted leading-relaxed">{service.data.description}</p>
           </div>
-          <h3 class="text-xl font-bold text-white mb-4">{service.data.title}</h3>
-          <p class="text-rebel-text-muted leading-relaxed">{service.data.description}</p>
-        </div>
-      ))}
+        );
+      })}
     </div>
   </div>
 </section>
