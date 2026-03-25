@@ -1,0 +1,96 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../../layouts/Layout.astro';
+
+const allServices = await getCollection('services');
+const service = allServices.find((entry) => entry.id === 'en-interim-pm');
+
+if (!service) {
+  throw new Error('Service entry "en-interim-pm" not found.');
+}
+
+const detailDescription = service.data.detailDescription ?? service.data.description;
+const processSteps = service.data.processSteps ?? [];
+const whoItIsFor = service.data.whoItIsFor ?? [];
+const caseStudies = service.data.caseStudies ?? [];
+const ctaLabel = service.data.heroCtaLabel ?? 'Get in touch';
+const ctaHref = service.data.heroCtaHref ?? 'mailto:hello@valuerebels.com';
+---
+<Layout title={`${service.data.title} | Value Rebels`} description={service.data.description}>
+  <section class="relative pt-28 pb-20 bg-rebel-darker overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-rebel-darker/60 via-rebel-darker/85 to-rebel-dark z-10" />
+    <div class="absolute inset-0 bg-[url('/images/hero-bg.jpg')] bg-cover bg-center opacity-30" />
+    <div class="relative z-20 max-w-7xl mx-auto px-6">
+      <a href="/en#services" class="text-rebel-red hover:text-rebel-red-dark text-sm font-medium inline-block mb-8 transition-colors">
+        &larr; Back to services
+      </a>
+      <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight mb-6">{service.data.title}</h1>
+      <p class="text-lg md:text-xl text-rebel-text-muted max-w-3xl mb-10">{detailDescription}</p>
+      <a
+        href={ctaHref}
+        class="inline-block bg-rebel-red hover:bg-rebel-red-dark text-white font-semibold text-sm tracking-widest uppercase px-8 py-4 rounded transition-colors"
+      >
+        {ctaLabel}
+      </a>
+    </div>
+  </section>
+
+  <section class="py-20 bg-rebel-dark">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-white mb-8">Process steps</h2>
+      <ul class="space-y-4 text-rebel-text-muted text-lg">
+        {processSteps.map((step) => (
+          <li class="flex gap-3">
+            <span class="text-rebel-red mt-1">&#8226;</span>
+            <span>{step}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="py-20 bg-rebel-darker">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-white mb-8">Who it is for</h2>
+      <ul class="space-y-4 text-rebel-text-muted text-lg">
+        {whoItIsFor.map((item) => (
+          <li class="flex gap-3">
+            <span class="text-rebel-red mt-1">&#8226;</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="py-20 bg-rebel-dark">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-white mb-10">Case studies</h2>
+      <div class="space-y-8">
+        {caseStudies.map((caseStudy, index) => (
+          <article id={`case-${index + 1}`} class="bg-rebel-gray rounded-lg p-8">
+            <h3 class="text-2xl font-bold text-white mb-3">{caseStudy.title}</h3>
+            {caseStudy.clientName && <p class="text-rebel-red text-sm tracking-wide uppercase mb-4">{caseStudy.clientName}</p>}
+            <p class="text-rebel-text-muted mb-6 text-lg">{caseStudy.summary}</p>
+            <ul class="space-y-3 text-rebel-text-muted">
+              {caseStudy.results.map((result) => (
+                <li class="flex gap-3">
+                  <span class="text-rebel-red mt-1">&#8226;</span>
+                  <span>{result}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+      <div class="mt-12">
+        <a
+          href={ctaHref}
+          class="inline-block bg-rebel-red hover:bg-rebel-red-dark text-white font-semibold text-sm tracking-widest uppercase px-8 py-4 rounded transition-colors"
+        >
+          {ctaLabel}
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

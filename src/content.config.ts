@@ -19,6 +19,17 @@ const services = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    detailDescription: z.string().optional(),
+    heroCtaLabel: z.string().optional(),
+    heroCtaHref: z.string().optional(),
+    processSteps: z.array(z.string()).optional(),
+    whoItIsFor: z.array(z.string()).optional(),
+    caseStudies: z.array(z.object({
+      title: z.string(),
+      summary: z.string(),
+      results: z.array(z.string()),
+      clientName: z.string().optional(),
+    })).optional(),
     icon: z.string().optional(),
     order: z.number(),
     lang: z.enum(['en', 'de']),
