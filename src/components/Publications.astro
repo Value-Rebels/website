@@ -24,32 +24,80 @@ const articles = allArticles
     <h3 class="text-sm font-bold tracking-widest uppercase text-rebel-red mb-8">
       {t(lang, 'publications.videos')}
     </h3>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-      {videos.map(video => (
-        <a
-          href={`https://www.youtube.com/watch?v=${video.data.youtubeId}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group"
-        >
-          <div class="aspect-video bg-rebel-gray rounded-lg overflow-hidden mb-4 relative">
+    <div id="video-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+      {videos.map((video, index) => (
+        <div class="group video-item" data-index={index} style={index >= 3 ? 'display:none' : ''}>
+          <div class="aspect-video bg-rebel-gray rounded-lg overflow-hidden mb-4 relative video-container" data-youtube-id={video.data.youtubeId}>
             <img
-              src={`https://img.youtube.com/vi/${video.data.youtubeId}/maxresdefault.jpg`}
+              src={video.data.thumbnail || `https://img.youtube.com/vi/${video.data.youtubeId}/maxresdefault.jpg`}
               alt={video.data.title}
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              loading="lazy"
             />
-            <div class="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/20 transition-colors">
-              <svg class="w-16 h-16 text-white/80 group-hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
+            <button
+              class="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/20 transition-colors w-full"
+              aria-label={`Play ${video.data.title}`}
+            >
+              <svg class="w-16 h-16 text-white/80 hover:text-white transition-colors" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
               </svg>
-            </div>
+            </button>
           </div>
-          <h4 class="text-lg font-bold text-white group-hover:text-rebel-red transition-colors">{video.data.title}</h4>
+          <h4 class="text-lg font-bold text-white">{video.data.title}</h4>
           <p class="text-rebel-text-muted text-sm mt-2">{video.data.description}</p>
-        </a>
+        </div>
       ))}
     </div>
+
+    <!-- Pagination -->
+    <div class="flex items-center justify-between mb-20">
+      <button id="video-prev" class="flex items-center gap-2 text-rebel-text-muted hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed" disabled>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        Previous
+      </button>
+      <span id="video-page-indicator" class="text-rebel-text-muted text-sm"></span>
+      <button id="video-next" class="flex items-center gap-2 text-rebel-text-muted hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
+        Next
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+
+    <script>
+      const perPage = 3;
+      let currentPage = 0;
+      const items = Array.from(document.querySelectorAll('.video-item'));
+      const totalPages = Math.ceil(items.length / perPage);
+      const prevBtn = document.getElementById('video-prev');
+      const nextBtn = document.getElementById('video-next');
+      const indicator = document.getElementById('video-page-indicator');
+
+      function showPage(page: number) {
+        items.forEach((item, i) => {
+          (item as HTMLElement).style.display = (i >= page * perPage && i < (page + 1) * perPage) ? '' : 'none';
+        });
+        if (prevBtn) (prevBtn as HTMLButtonElement).disabled = page === 0;
+        if (nextBtn) (nextBtn as HTMLButtonElement).disabled = page >= totalPages - 1;
+        if (indicator) indicator.textContent = `${page + 1} / ${totalPages}`;
+      }
+
+      prevBtn?.addEventListener('click', () => { currentPage--; showPage(currentPage); });
+      nextBtn?.addEventListener('click', () => { currentPage++; showPage(currentPage); });
+
+      showPage(0);
+
+      document.querySelectorAll('.video-container').forEach(container => {
+        const button = container.querySelector('button');
+        button?.addEventListener('click', () => {
+          const youtubeId = container.getAttribute('data-youtube-id');
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1`;
+          iframe.allow = 'autoplay; encrypted-media';
+          iframe.allowFullscreen = true;
+          iframe.className = 'absolute inset-0 w-full h-full';
+          container.innerHTML = '';
+          container.appendChild(iframe);
+        });
+      });
+    </script>
 
     <!-- Articles -->
     <h3 class="text-sm font-bold tracking-widest uppercase text-rebel-red mb-8">
